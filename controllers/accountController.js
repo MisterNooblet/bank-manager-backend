@@ -52,7 +52,7 @@ export const depositToAccount = asyncHandler(async (req, res, next) => {
         prevBalance: prevBalance,
         newBalance: account.balance,
         from: account._id,
-        isWithdraw: true,
+        type: req.body.amount > 0 ? 'deposit' : 'withdraw',
         amount: req.body.amount
     })
 
@@ -80,7 +80,7 @@ export const transferToAccount = asyncHandler(async (req, res, next) => {
             newBalance: account.balance,
             from: account._id,
             to: req.body.to,
-            isWithdraw: true,
+            type: 'transfer',
             amount: req.body.amount
         })
         res.status(200).json({

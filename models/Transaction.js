@@ -15,17 +15,9 @@ const transactionSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    isWithdraw: {
-      type: Boolean,
-      default: false
-    },
-    isDeposit: {
-      type: Boolean,
-      default: false
-    },
-    isTransfer: {
-      type: Boolean,
-      default: false
+    type: {
+      type: String,
+      required: true
     },
     prevBalance: {
       type: Number,
