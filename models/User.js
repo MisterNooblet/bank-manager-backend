@@ -28,4 +28,20 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+userSchema.post('save', async function (doc, next) {
+  if (doc.accounts.length === 0) {
+    try {
+      const account = new Account({ owner: doc._id });
+      await account.save();
+      doc.accounts.push(account._id);
+      await doc.save();
+      next();
+    } catch (error) {
+      next(error);
+    }
+  }
+
+});
+
+
 export default mongoose.model('User', userSchema);
