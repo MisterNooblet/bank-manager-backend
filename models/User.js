@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Account from './Account.js'
 
 const userSchema = new mongoose.Schema(
   {
