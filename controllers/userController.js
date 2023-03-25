@@ -43,7 +43,7 @@ export const getUser = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const updateUser = asyncHandler(async (req, res, next) => {
-    let user = await User.findByIdAndUpdate(req.params.id, { name: req.body.name, isActive: req.body.isActive })
+    let user = await User.findByIdAndUpdate(req.params.id, { name: req.body.name })
     user = await User.findById(req.params.id)
     res.status(200).json({
         success: true,

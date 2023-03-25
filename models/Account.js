@@ -16,6 +16,10 @@ const accountSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
     transactions: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -28,20 +32,32 @@ const accountSchema = new mongoose.Schema(
   }
 );
 
-accountSchema.post('save', async function (doc, next) {
+accountSchema.post('findOneAndUpdate', async function (doc, next) {
   try {
-    accountSchema.pre('save', async function () {
-      // Update the user's netWorth whenever an account is updated
-      const user = await User.findById(this.owner);
-      if (user) {
-        await user.updateNetWorth();
-      }
-    });
+    // Update the user's netWorth whenever an account is updated
+    const user = await User.findById(doc.owner);
+    if (user) {
+      console.log('test');
+      await user.updateNetWorth();
+    }
+
 
     next()
   } catch (error) {
     next(error)
   }
 
+});
+
+accountSchema.pre('findOneAndRemove', async function (doc, next) {
+  try {
+    const user = await User.findById(doc.owner);
+    const updatedAccounts = user.accounts.filter(acc => acc._id !== doc._id)
+    user.accounts = updatedAccounts
+    await user.save()
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 export default mongoose.model('Account', accountSchema);
