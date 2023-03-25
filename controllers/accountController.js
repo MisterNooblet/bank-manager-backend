@@ -7,8 +7,7 @@ import Transaction from "../models/Transaction.js";
 // @route   GET /api/v1/accounts
 // @access  Public
 export const getAccounts = asyncHandler(async (req, res, next) => {
-    const accounts = await Account.find()
-    res.status(200).json(res.accountQuery);
+    res.status(200).json(res.queryResult);
 });
 
 // @desc    Get account

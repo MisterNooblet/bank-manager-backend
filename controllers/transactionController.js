@@ -5,5 +5,5 @@ import asyncHandler from "../middlewares/asyncHandler.js";
 // @access  Public
 
 export const getTransactions = asyncHandler(async (req, res, next) => {
-    res.status(200).json(res.transactionQuery)
+    res.status(200).json(res.queryResult)
 })

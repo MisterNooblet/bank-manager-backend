@@ -23,7 +23,7 @@ export const createUser = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const getUsers = asyncHandler(async (req, res, next) => {
-    res.status(200).json(res.userQuery)
+    res.status(200).json(res.queryResult)
 })
 
 // @desc    Get user

@@ -1,10 +1,11 @@
 import express from 'express'
 import { getTransactions } from '../controllers/transactionController.js';
-import transactionQueries from '../middlewares/transactionQueries.js';
+import advancedQueries from '../middlewares/advancedQueries.js';
+import Transaction from '../models/Transaction.js';
 
 
 const router = express.Router();
 
-router.route('/').get(transactionQueries, getTransactions)
+router.route('/').get(advancedQueries(Transaction, 'transaction'), getTransactions)
 
 export default router
