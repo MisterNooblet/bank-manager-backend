@@ -1,6 +1,5 @@
 import express from 'express'
 import { createUser, getUsers, getUser, updateUser, userAddAccount, deleteUser } from '../controllers/userController.js';
-import userQueries from '../middlewares/userQueries.js'
 import advancedQueries from '../middlewares/advancedQueries.js';
 import User from '../models/User.js';
 const router = express.Router();

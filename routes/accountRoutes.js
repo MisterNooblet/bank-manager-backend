@@ -1,6 +1,5 @@
 import express from 'express'
 import { depositToAccount, getAccount, getAccounts, transferToAccount, updateAccount } from '../controllers/accountController.js';
-import accountQueries from '../middlewares/accountQueries.js';
 import advancedQueries from '../middlewares/advancedQueries.js';
 
 import Account from '../models/Account.js';

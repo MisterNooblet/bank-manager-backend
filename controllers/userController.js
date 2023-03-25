@@ -6,13 +6,17 @@ import User from "../models/User.js";
 // @route   POST /api/v1/users
 // @access  Public
 export const createUser = asyncHandler(async (req, res, next) => {
+
     const { name, passportID, credit } = req.body
+
     const user = await User.create({ name: name, passportID: passportID });
+
     if (credit) {
         const account = await Account.findById(user.accounts[0])
         account.credit = credit
         await account.save()
     }
+
     res.status(200).json({
         success: true,
         data: user,
@@ -23,7 +27,9 @@ export const createUser = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const getUsers = asyncHandler(async (req, res, next) => {
+
     res.status(200).json(res.queryResult)
+
 })
 
 // @desc    Get user
@@ -31,11 +37,14 @@ export const getUsers = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const getUser = asyncHandler(async (req, res, next) => {
+
     const user = await User.findById(req.params.id)
+
     res.status(200).json({
         success: true,
         data: user,
     });
+
 })
 
 // @desc    Update user
@@ -43,12 +52,16 @@ export const getUser = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const updateUser = asyncHandler(async (req, res, next) => {
+
     let user = await User.findByIdAndUpdate(req.params.id, { name: req.body.name })
+
     user = await User.findById(req.params.id)
+
     res.status(200).json({
         success: true,
         data: user,
     });
+
 })
 
 // @desc    Delete user
@@ -56,11 +69,14 @@ export const updateUser = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const deleteUser = asyncHandler(async (req, res, next) => {
+
     let user = await User.findOneAndRemove({ _id: req.params.id })
+
     res.status(200).json({
         success: true,
         data: user,
     });
+
 })
 
 // @desc    Add account to user
@@ -68,13 +84,20 @@ export const deleteUser = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const userAddAccount = asyncHandler(async (req, res, next) => {
+
     let user = await User.findById(req.params.id)
+
     const account = new Account({ owner: user._id });
+
     await account.save();
+
     user.accounts.push(account._id);
+
     await user.save();
+
     res.status(200).json({
         success: true,
         data: user,
     });
+
 })
