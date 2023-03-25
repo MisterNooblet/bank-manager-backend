@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from './User.js';
 
 const accountSchema = new mongoose.Schema(
   {
@@ -27,4 +28,20 @@ const accountSchema = new mongoose.Schema(
   }
 );
 
+accountSchema.post('save', async function (doc, next) {
+  try {
+    accountSchema.pre('save', async function () {
+      // Update the user's netWorth whenever an account is updated
+      const user = await User.findById(this.owner);
+      if (user) {
+        await user.updateNetWorth();
+      }
+    });
+
+    next()
+  } catch (error) {
+    next(error)
+  }
+
+});
 export default mongoose.model('Account', accountSchema);

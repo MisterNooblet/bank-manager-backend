@@ -7,24 +7,31 @@ import connectDB from './config/mongo.js';
 import users from './routes/userRoutes.js'
 import accounts from './routes/accountRoutes.js'
 import transactions from './routes/transactionRoutes.js'
+import errorHandler from './controllers/errorHandler.js';
 
 config({ path: './config/config.env' });
 
+connectDB();
 const app = express();
 app.use(express.json());
-connectDB();
 
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-const PORT = process.env.PORT || 8080;
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Welcome to AR Bank API'
+  });
+});
 
 app.use('/api/v1/users', users)
 app.use('/api/v1/accounts', accounts)
 app.use('/api/v1/transactions', transactions)
 
+app.use(errorHandler)
 
+const PORT = process.env.PORT || 8080;
 
 const server = app.listen(
   PORT,

@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
         ref: 'Account',
       },
     ],
+    isActive: {
+      type: Boolean,
+      default: true
+    }
   },
   {
     timestamps: true,
@@ -43,5 +47,34 @@ userSchema.post('save', async function (doc, next) {
 
 });
 
+userSchema.post('findOneAndRemove', async function (doc, next) {
+  try {
+    console.log('works');
+    // Delete all accounts associated with the user
+    await Account.deleteMany({ owner: doc._id });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+userSchema.methods.updateNetWorth = async function (doc, next) {
+  const accounts = await Account.find({ owner: this._id });
+  const netWorth = accounts.reduce((total, account) => {
+    return total + account.balance;
+  }, 0);
+  this.netWorth = netWorth;
+  await this.save();
+  next()
+};
+
+userSchema.methods.addNewAccount = async function (doc, next) {
+  const account = new Account({ owner: doc._id });
+  await account.save();
+  doc.accounts.push(account._id);
+  await doc.save();
+  return doc
+
+}
 
 export default mongoose.model('User', userSchema);
