@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import colors from 'colors'
 import connectDB from './config/mongo.js';
+import cors from 'cors'
 
 import users from './routes/userRoutes.js'
 import accounts from './routes/accountRoutes.js'
@@ -13,6 +14,7 @@ config({ path: './config/config.env' });
 
 connectDB();
 const app = express();
+app.use(cors())
 app.use(express.json());
 
 if (process.env.NODE_ENV !== 'production') {
