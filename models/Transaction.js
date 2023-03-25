@@ -10,7 +10,6 @@ const transactionSchema = new mongoose.Schema(
     to: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Account',
-      default: 0
     },
     amount: {
       type: Number,
@@ -27,6 +26,14 @@ const transactionSchema = new mongoose.Schema(
     isTransfer: {
       type: Boolean,
       default: false
+    },
+    prevBalance: {
+      type: Number,
+      required: false
+    },
+    newBalance: {
+      type: Number,
+      required: false
     },
   },
   {

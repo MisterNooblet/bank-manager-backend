@@ -8,13 +8,19 @@ const accountSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    balance: {
-      type: Number,
-      default: 0,
-    },
     credit: {
       type: Number,
       default: 0,
+    },
+    balance: {
+      type: Number,
+      default: 0,
+      validate: {
+        validator: function (v) {
+          return v >= -this.credit;
+        },
+        message: 'Balance must be greater than or equal to -credit',
+      },
     },
     isActive: {
       type: Boolean,
@@ -32,12 +38,12 @@ const accountSchema = new mongoose.Schema(
   }
 );
 
-accountSchema.post('findOneAndUpdate', async function (doc, next) {
+
+accountSchema.post('save', async function (doc, next) {
   try {
     // Update the user's netWorth whenever an account is updated
     const user = await User.findById(doc.owner);
     if (user) {
-      console.log('test');
       await user.updateNetWorth();
     }
 
