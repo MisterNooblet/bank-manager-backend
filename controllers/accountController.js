@@ -48,7 +48,7 @@ export const depositToAccount = asyncHandler(async (req, res, next) => {
 
     const transaction = await createTransaction(false, {
         prevBalance: prevBalance,
-        newBalance: account.balance += req.body.amount,
+        newBalance: Number(account.balance) += Number(req.body.amount),
         from: account._id,
         type: req.body.amount > 0 ? 'deposit' : 'withdraw',
         amount: req.body.amount

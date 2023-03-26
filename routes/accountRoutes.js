@@ -10,7 +10,6 @@ const router = express.Router();
 
 router.route('/').get(advancedQueries(Account, 'account'), getAccounts)
 router.route('/:id').get(getAccount).put(updateAccount)
-router.route('/:id/withdraw').post()
 router.route('/:id/insideactions').post(depositToAccount)
 router.route('/:id/transfer').post(transferToAccount)
 
