@@ -80,10 +80,11 @@ export const transferToAccount = asyncHandler(async (req, res, next) => {
     if (req.body.amount > 0) {
 
         let account = await Account.findById(req.params.id)
+        console.log(req.params.id);
         let prevBalance = account.balance
         const transaction = await createTransaction(true, {
             prevBalance: prevBalance,
-            newBalance: account.balance + req.body.amount * -1,
+            newBalance: account.balance - Number(req.body.amount) * -1,
             from: account._id,
             to: req.body.to,
             type: 'transfer',
@@ -112,10 +113,10 @@ const createTransaction = async (transfer, params) => {
     if (transfer) {
         const reciever = await Account.findById(transaction.to)
         reciever.transactions.push(transaction._id)
-        reciever.balance + params.amount
+        reciever.balance = reciever.balance + params.amount
         await reciever.save()
         account.transactions.push(transaction._id)
-        account.balance = account.balance + params.amount
+        account.balance = account.balance - params.amount
     } else {
         account.transactions.push(transaction._id)
         account.balance = account.balance + params.amount
