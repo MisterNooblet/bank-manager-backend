@@ -28,7 +28,6 @@ export const getAccount = asyncHandler(async (req, res, next) => {
 // @access  Public
 
 export const updateAccount = asyncHandler(async (req, res, next) => {
-    // let account = await Account.findOneAndUpdate({ _id: req.params.id }, { credit: req.body.credit, isActive: req.body.isActive, balance: req.body.balance })
     let account = await Account.findById(req.params.id)
     if (req.body.credit) { account.credit = req.body.credit }
     if (req.body.isActive) { account.isActive = req.body.isActive }

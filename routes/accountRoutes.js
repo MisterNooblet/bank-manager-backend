@@ -9,7 +9,6 @@ import Account from '../models/Account.js';
 const router = express.Router();
 
 router.route('/').get(advancedQueries(Account, 'account'), getAccounts)
-// router.route('/').get(accountQueries, getAccounts)
 router.route('/:id').get(getAccount).put(updateAccount)
 router.route('/:id/withdraw').post()
 router.route('/:id/insideactions').post(depositToAccount)
