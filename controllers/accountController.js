@@ -45,10 +45,18 @@ export const updateAccount = asyncHandler(async (req, res, next) => {
 export const depositToAccount = asyncHandler(async (req, res, next) => {
     let account = await Account.findById(req.params.id)
     let prevBalance = account.balance
+    let newBalance
+    if (req.body.amount > 0) {
 
+        newBalance = (account.balance + Number(req.body.amount))
+        console.log(newBalance);
+    } else {
+        newBalance = (account.balance - Number(req.body.amount))
+        console.log(newBalance);
+    }
     const transaction = await createTransaction(false, {
         prevBalance: prevBalance,
-        newBalance: req.body.amount > 0 ? account.balance += Number(req.body.amount) : account.balance -= Number(req.body.amount),
+        newBalance: newBalance,
         from: account._id,
         type: req.body.amount > 0 ? 'deposit' : 'withdraw',
         amount: req.body.amount
@@ -110,7 +118,7 @@ const createTransaction = async (transfer, params) => {
         account.balance = account.balance -= params.amount
     } else {
         account.transactions.push(transaction._id)
-        account.balance = params.newBalance
+        account.balance = account.balance + params.amount
     }
 
 
