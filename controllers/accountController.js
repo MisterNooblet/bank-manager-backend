@@ -100,17 +100,21 @@ const createTransaction = async (transfer, params) => {
     let result;
     let transaction = new Transaction({ ...params })
     transaction = await transaction.save()
-
+    let account = await Account.findById(transaction.from)
     if (transfer) {
         const reciever = await Account.findById(transaction.to)
         reciever.transactions.push(transaction._id)
         reciever.balance += params.amount
         await reciever.save()
+        account.transactions.push(transaction._id)
+        account.balance = account.balance -= params.amount
+    } else {
+        account.transactions.push(transaction._id)
+        account.balance = account.balance = params.newBalance
     }
 
-    let account = await Account.findById(transaction.from)
-    account.transactions.push(transaction._id)
-    account.balance = account.balance -= params.amount
+
+
     account = await account.save()
     return [account, transaction._id]
 }
