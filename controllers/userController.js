@@ -9,7 +9,12 @@ export const createUser = asyncHandler(async (req, res, next) => {
 
     const { name, passportID, credit } = req.body
 
-    const user = await User.create({ name: name, passportID: passportID });
+    const user = new User({ name: name, passportID: passportID });
+    const account = new Account({ owner: user._id });
+    user.accounts.push(account._id);
+    await user.save()
+    await account.save();
+
 
     if (credit) {
         const account = await Account.findById(user.accounts[0])
