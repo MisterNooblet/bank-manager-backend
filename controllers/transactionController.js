@@ -15,7 +15,6 @@ export const getTransactions = asyncHandler(async (req, res, next) => {
 
 export const getUserTransactions = asyncHandler(async (req, res, next) => {
     const result = await Transaction.find({ from: req.body.from })
-    console.log(result);
     res.status(200).json({
         success: true,
         data: result

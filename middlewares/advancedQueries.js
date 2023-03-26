@@ -2,7 +2,6 @@ import { ALL_OK, NO_RESULTS } from "../constants/messages.js";
 import { AMOUNT, BALANCE, IS_ACTIVE, MAX_ACCOUNT, MAX_TRANSACTION, MAX_USER, MIN_ACCOUNT, MIN_TRANSACTION, MIN_USER, NET_WORTH, TYPE } from "../constants/queryStrings.js";
 
 const transactionQueries = (model, type) => async (req, res, next) => {
-    console.log(model, type);
     const minString = type === 'transaction' ? MIN_TRANSACTION : type === 'account' ? MIN_ACCOUNT : MIN_USER
     const maxString = type === 'transaction' ? MAX_TRANSACTION : type === 'account' ? MAX_ACCOUNT : MAX_USER
     const valueKey = type === 'transaction' ? AMOUNT : type === 'account' ? BALANCE : NET_WORTH
@@ -29,7 +28,6 @@ const transactionQueries = (model, type) => async (req, res, next) => {
         }
 
         if (reqQuery[boolQueryName]) {
-            console.log(boolQueryName);
             query = { ...query, [boolQueryName]: reqQuery[boolQueryName] }
         }
 
