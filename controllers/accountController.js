@@ -110,7 +110,7 @@ const createTransaction = async (transfer, params) => {
         account.balance = account.balance -= params.amount
     } else {
         account.transactions.push(transaction._id)
-        account.balance = account.balance = params.newBalance
+        account.balance = params.newBalance
     }
 
 
