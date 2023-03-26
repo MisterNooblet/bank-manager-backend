@@ -113,13 +113,13 @@ const createTransaction = async (transfer, params) => {
     if (transfer) {
         const reciever = await Account.findById(transaction.to)
         reciever.transactions.push(transaction._id)
-        reciever.balance = reciever.balance + params.amount
+        reciever.balance = reciever.balance + Number(params.amount)
         await reciever.save()
         account.transactions.push(transaction._id)
-        account.balance = account.balance - params.amount
+        account.balance = account.balance - Number(params.amount)
     } else {
         account.transactions.push(transaction._id)
-        account.balance = account.balance + params.amount
+        account.balance = account.balance + Number(params.amount)
     }
 
 
